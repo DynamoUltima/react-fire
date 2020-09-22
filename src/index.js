@@ -8,13 +8,15 @@ import rootReducer from './components/store/reducers/rootReducer';
 import { Provider, useSelector } from 'react-redux';
 import thunk from 'redux-thunk';
 import { reduxFirestore, getFirestore, createFirestoreInstance } from 'redux-firestore';
-import { ReactReduxFirebaseProvider, getFirebase, isLoaded, useFirestoreConnect } from "react-redux-firebase";
+import { ReactReduxFirebaseProvider, getFirebase, isLoaded,  } from "react-redux-firebase";
 import fbConfig from './config/fbConfig';
 import firebase from "firebase/app"
 
+
+
 const rrfConfig = {
   userProfile: 'users',
-  // useFirebaseForProfile: true,
+  useFirestoreForProfile: true,
   profileFactory: (userData, profileData, firebase) => { // how profiles are stored in database
     const { user } = userData
     return {
@@ -22,6 +24,8 @@ const rrfConfig = {
     }
   }
 }
+
+
 
 const store = createStore(rootReducer,
   compose(
@@ -42,20 +46,34 @@ const rrfProps = {
   sessions: 'sessions'
 };
 
+
 function AuthIsLoaded({ children }) {
-  const auth = useSelector(state => state.firebase.auth)
-  const { uid } = useSelector(state => state.firebase.auth);
-  // const myUser = useFirestoreConnect([{
-  //   collection: `users`,
-  //   // doc: uid
-  //   // storeAs: "user",
-  // }]);
-//  const myUser=  firebase.firestore().collection(`users`).doc(`${uid}`).get()
   
-  // const todos = useSelector((state) => state.firestore.data.user)
+  const auth = useSelector(state => state.firebase.auth);
+  
+  const { uid } = useSelector(state => state.firebase.auth);
+ 
+  
+ 
+  const myUser= firebase.firestore().collection(`users`)
+ .doc(`${uid}`).get()
+ .then(  doc=> {
+   const  theUser =  doc.data();
+   return theUser
+   //put some if statements to prevent null errors //uid ,doc 
+  // console.log('hi', theUser)
+ }).then(doc=>{
+ 
+  console.log('hi', doc)
+  //  myFirebase.updateProfile(doc);
+
+ })
+//  .catch(err=>console.log(err))
   
 
-  // console.log('hello', myUser)
+  
+
+  console.log('hello', myUser)
   // firebase.updateProfile({ role: 'admin' });
 
   if (!isLoaded(auth)) return <div>Loading Screen...</div>;
