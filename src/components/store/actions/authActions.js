@@ -41,14 +41,16 @@ export const  signUp=(newUser)=>{
                 initials:newUser.firstName[0]+newUser.lastName[0]
             })
 
-        }).then(()=>{
+        })
+        .then(()=>{
             const firebase = useFirebase()
             firebase.updateProfile(
                 {firstName:newUser.firstName,
                 lastName:newUser.lastName,
                 initials:newUser.firstName[0]+newUser.lastName[0]});
                 console.log('worked')
-        }).then(()=>{
+        })
+        .then(()=>{
             dispatch({type:'SIGNUP_SUCCESS'})
         }).catch((err)=>{
             dispatch({type:'SIGNUP_ERROR',err})

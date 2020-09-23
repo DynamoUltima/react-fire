@@ -11,10 +11,10 @@ class Dashboard extends Component {
     // state={id:''}
 
     render() {
-        const { projects, auth ,} = this.props;
-        
+        const { projects, auth, notifications } = this.props;
+
         // this.setState({id:auth.uid})
-        
+
 
 
 
@@ -26,7 +26,7 @@ class Dashboard extends Component {
                         <ProjectList projects={projects} />
                     </div>
                     <div className="col s12 m5 offset-m1">
-                        <Notifications />
+                        <Notifications notifications={notifications} />
                     </div>
                 </div>
 
@@ -41,22 +41,21 @@ const mapStateToProps = (state) => {
     return {
         projects: state.firestore.ordered.projects || state.project.projects,
         auth: state.firebase.auth,
-        user:state.firestore.ordered.users
+        user: state.firestore.ordered.users,
+        notifications: state.firestore.ordered.notifications
 
     }
 
 }
-// firestoreConnect(props => {
-//     // console.log("firestoreConnect props are the same that are passed to the component, ", props);
-//   return [
-//       { collection: "users", doc: props.match.params.id, storeAs: "user" }
-//   ]
-// }),
+
 
 export default compose(
-    firestoreConnect(() => ['projects']),
-    firestoreConnect(() => ['users']),
-    
+    firestoreConnect([
+        { collection: 'projects',orderBy:['createdAt','desc'] },
+        { collection: 'notifications', limit: 3,orderBy:['time','desc'] }
+    ]),
+
+
     connect(mapStateToProps),
 
 )(Dashboard);
