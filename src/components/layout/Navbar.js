@@ -8,11 +8,9 @@ import { firestoreConnect } from 'react-redux-firebase'
 
 const Navbar = (props) => {
 
-    const { auth ,user} = props;
-    console.log('helloWorld',user);
+    const { auth,profile } = props;
     
-    // user && user.map(user => {user.firstName})
-    const links = auth.uid ? <SignedInLinks /> : <SignedOutLinks />
+    const links = auth.uid ? <SignedInLinks profile={profile} /> : <SignedOutLinks />
     return (
         <nav className="nav-wrapper grey darken-3">
             <div className="container">
@@ -30,7 +28,7 @@ const mapStateToProps = (state) => {
     return {
         auth: state.firebase.auth,
         profile: state.firebase.profile,
-        user:state.firestore.ordered.users
+       
 
     }
 

@@ -1,4 +1,3 @@
-import { useFirebase,  } from 'react-redux-firebase'
 export const signIn = (credentials) => {
     return (dispatch, getState, { getFirebase }) => {
         const firebase = getFirebase();
@@ -41,14 +40,6 @@ export const  signUp=(newUser)=>{
                 initials:newUser.firstName[0]+newUser.lastName[0]
             })
 
-        })
-        .then(()=>{
-            const firebase = useFirebase()
-            firebase.updateProfile(
-                {firstName:newUser.firstName,
-                lastName:newUser.lastName,
-                initials:newUser.firstName[0]+newUser.lastName[0]});
-                console.log('worked')
         })
         .then(()=>{
             dispatch({type:'SIGNUP_SUCCESS'})

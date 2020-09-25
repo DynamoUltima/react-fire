@@ -10,10 +10,11 @@ class CreateProject extends Component {
         title: '',
         content: ''
     }
-    handleSubmit = (e) => {
+    handleSubmit = async(e) => {
         e.preventDefault();
-        console.log(this.state)
-        this.props.createProject(this.state)
+        console.log(this.state);
+       await this.props.createProject(this.state)
+        this.props.history.push("/")
     }
 
 
